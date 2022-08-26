@@ -1,19 +1,41 @@
 import PySimpleGUIQt as sg
 # use psutil?
 
-menu_def = ['NULL', ['Preferences', '---', 'Start Monitoring', 'Pause Monitoring', '---', 'Exit']]
+tray_layout = ['NULL',
+               ['Preferences',
+                '---',
+                'Enable Monitoring',
+                'Pause Monitoring',
+                '---',
+                'Exit']]
 
-tray = sg.SystemTray(menu=menu_def, filename=r'icon.png', tooltip='System Monitor Control Panel')
+tray_window = sg.SystemTray(
+    menu=tray_layout, filename=r'icon.png', tooltip='System Monitor Control Panel')
 
-prefMenu = [[sg.Text('Some text')], [sg.Button('Exit')]]
+
+def pref_menu_window():
+    pref_menu_layout = [[sg.Text('Settings 1')],
+                        [sg.Text('Settings 2')],
+                        [sg.Text('Settings 3')],
+                        [sg.Button('Exit')]]
+
+    pref_menu_window = sg.Window(
+        'System Monitor Preferences', pref_menu_layout)
+
+    while True:
+        pref_event, pref_values = pref_menu_window.read()
+        if pref_event in (None, 'Exit'):
+            print('Exiting Preferences')
+            break
+
+    pref_menu_window.close()
+
 
 while True:
-    tray_selection = tray.Read()
-    if tray_selection == 'Exit':
+    tray_event = tray_window.read()
+    if tray_event == 'Exit':
         break
-    if tray_selection == 'Preferences':
-        window = sg.Window('System Monitor Control Panel', prefMenu, finalize=True)
+    if tray_event == 'Preferences':
+        pref_menu_window()
 
-    pref_selection = window.Read()
-    if pref_selection == 'Exit':
-        break
+tray_window.close()
