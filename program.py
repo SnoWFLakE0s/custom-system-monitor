@@ -1,3 +1,4 @@
+from tokenize import group
 import PySimpleGUIQt as sg
 from tkinter import font
 # use psutil?
@@ -15,15 +16,21 @@ tray_window = sg.SystemTray(
 
 
 def pref_menu_window():
-    pref_menu_title_font = ('Arial', 24, 'bold')
-    pref_menu_layout = [[sg.Text('System Polling Interval'), sg.In(key='-SYS-POLL-INTERVAL-')],
+    pref_menu_title_font = ('Arial', 12, 'bold')
+    pref_menu_layout = [[sg.Text('General Preferences', font=pref_menu_title_font)],
+                        [sg.Text('System Polling Interval (ms)'),
+                         sg.In(key='-SYS-POLL-INTERVAL-')],
+                        [sg.Text('Monitor Display Theme'), sg.Combo(
+                            ['Theme 1', 'Theme 2'], readonly=True)],
                         [sg.HorizontalSeparator()],
-                        [sg.Text('CPU Monitoring',
-                                 font=pref_menu_title_font)],
-                        [sg.Checkbox('CPU Clock Speed', default=True), sg.Checkbox(
-                            'CPU Temperatures', default=True)],
-                        [sg.Text('Settings 3')],
-                        [sg.Button('Exit')]]
+                        [sg.Text('CPU Monitoring', font=pref_menu_title_font)],
+                        [sg.Checkbox('CPU Clock Speed', default=True)],
+                        [sg.Radio('Show Peak Core Clock Speed', group_id='cpu_clock_display_type', default=True), sg.Radio(
+                            'Show Individual Core Clock Speeds', group_id='cpu_clock_display_type')],
+                        [sg.Checkbox('CPU Temperature', default=True)],
+                        [sg.Radio('Celcius', group_id='cpu_temp_display_type', default=True), sg.Radio(
+                            'Farenheit', group_id='cpu_temp_display_type')],
+                        [sg.Button('Apply && Save Changes'), sg.Button('Exit')]]
 
     pref_menu_window = sg.Window(
         'System Monitor Preferences', pref_menu_layout)
