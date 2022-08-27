@@ -1,4 +1,5 @@
 import PySimpleGUIQt as sg
+from tkinter import font
 # use psutil?
 
 tray_layout = ['NULL',
@@ -14,8 +15,13 @@ tray_window = sg.SystemTray(
 
 
 def pref_menu_window():
-    pref_menu_layout = [[sg.Text('Settings 1')],
-                        [sg.Text('Settings 2')],
+    pref_menu_title_font = ('Arial', 24, 'bold')
+    pref_menu_layout = [[sg.Text('System Polling Interval'), sg.In(key='-SYS-POLL-INTERVAL-')],
+                        [sg.HorizontalSeparator()],
+                        [sg.Text('CPU Monitoring',
+                                 font=pref_menu_title_font)],
+                        [sg.Checkbox('CPU Clock Speed', default=True), sg.Checkbox(
+                            'CPU Temperatures', default=True)],
                         [sg.Text('Settings 3')],
                         [sg.Button('Exit')]]
 
